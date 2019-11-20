@@ -1,5 +1,5 @@
 #!/bin/sh
 
-. ~/.anybot.secrets.sh
+. ~/.anybot.config.sh
 mix deps.get
 MIX_ENV=prod mix release
