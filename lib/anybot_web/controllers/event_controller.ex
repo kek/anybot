@@ -41,9 +41,9 @@ defmodule AnybotWeb.EventController do
   end
 
   def create(conn, _) do
-    Logger.info(inspect(conn.assigns.raw_body))
+    Logger.info("Unhandled event: " <> inspect(conn.assigns.raw_body))
 
     conn
-    |> send_resp(200, "yolo")
+    |> send_resp(200, "ok")
   end
 end
