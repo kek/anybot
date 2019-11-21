@@ -1,4 +1,7 @@
 import Config
 
 config :anybot,
-  foo: System.get_env("FOO")
+  slack_app_id: System.get_env("SLACK_APP_ID"),
+  slack_client_id: System.get_env("SLACK_CLIENT_ID"),
+  slack_client_secret: System.get_env("SLACK_CLIENT_SECRET"),
+  slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET")
