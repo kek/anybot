@@ -24,9 +24,13 @@ defmodule AnybotWeb.EventController do
       |> Base.encode16()
 
     if signed == slack_signature do
+      Logger.info("Computed signature #{signed} did match incoming signature #{slack_signature}")
+
       conn
       |> send_resp(200, challenge)
     else
+      Logger.info("Computed signature #{signed} did not incoming signature #{slack_signature}")
+
       conn
       |> send_resp(403, "no")
     end
