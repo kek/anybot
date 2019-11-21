@@ -31,7 +31,9 @@ defmodule AnybotWeb.EventController do
       conn
       |> send_resp(200, challenge)
     else
-      Logger.info("Computed signature #{signed} did not incoming signature #{slack_signature}")
+      Logger.info(
+        "Computed signature #{signed} did not match incoming signature #{slack_signature}"
+      )
 
       conn
       |> send_resp(403, "no")
