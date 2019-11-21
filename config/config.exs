@@ -19,6 +19,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :anybot,
+  slack_app_id: System.get_env("SLACK_APP_ID"),
+  slack_client_id: System.get_env("SLACK_CLIENT_ID"),
+  slack_client_secret: System.get_env("SLACK_CLIENT_SECRET"),
+  slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET")
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

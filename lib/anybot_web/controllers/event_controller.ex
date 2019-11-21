@@ -12,12 +12,30 @@ defmodule AnybotWeb.EventController do
     _ = token
     _ = slack_request_timestamp
     _ = slack_signature
-    Logger.info(inspect(conn.req_headers))
-    Logger.info(inspect(params))
+    Logger.debug(inspect(conn.req_headers))
+    Logger.debug(inspect(params))
 
-    response = "ok"
+    body = conn.assigns.raw_body
+
+    basestring = "v0:#{slack_request_timestamp}:#{body}"
+
+    signed =
+      :crypto.hmac(:sha256, Application.get_env(:anybot, :slack_signing_secret), basestring)
+      |> Base.encode16()
+
+    if signed == slack_signature do
+      conn
+      |> send_resp(200, challenge)
+    else
+      conn
+      |> send_resp(403, "no")
+    end
+  end
+
+  def create(conn, _) do
+    Logger.info(inspect(conn.assigns.raw_body))
 
     conn
-    |> send_resp(200, response)
+    |> send_resp(200, "yolo")
   end
 end
