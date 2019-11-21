@@ -19,6 +19,12 @@ defmodule AnybotWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/event", AnybotWeb do
+    pipe_through :api
+
+    post "/", EventController, :create
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", AnybotWeb do
   #   pipe_through :api
