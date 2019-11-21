@@ -20,8 +20,10 @@ defmodule AnybotWeb.EventController do
     basestring = "v0:#{slack_request_timestamp}:#{body}"
 
     signed =
-      :crypto.hmac(:sha256, Application.get_env(:anybot, :slack_signing_secret), basestring)
+      ("v0" <>
+         :crypto.hmac(:sha256, Application.get_env(:anybot, :slack_signing_secret), basestring))
       |> Base.encode16()
+      |> String.downcase()
 
     if signed == slack_signature do
       Logger.info("Computed signature #{signed} did match incoming signature #{slack_signature}")
