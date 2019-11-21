@@ -3,7 +3,8 @@ defmodule AnybotWeb.EventController do
   require Logger
 
   def create(conn, params) do
-    Logger.debug(inspect(conn.req_headers))
+    Logger.info(inspect(conn.req_headers))
+    Logger.info(inspect(params))
 
     conn
     |> send_resp(200, "ok")
