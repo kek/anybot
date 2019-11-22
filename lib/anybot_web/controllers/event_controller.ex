@@ -38,11 +38,14 @@ defmodule AnybotWeb.EventController do
        ) do
       Logger.info("Verified signature")
 
-      HTTPoison.post!("https://slack.com/api/chat.postMessage", %{
-        text: "Reminder: we've got a softball game tonight! `#{conn.assigns.raw_body}`",
-        token: slack_bot_token(),
-        channel: "GQT3XE3EG"
-      })
+      HTTPoison.post!(
+        "https://slack.com/api/chat.postMessage",
+        Jason.encode!(%{
+          text: "Reminder: we've got a softball game tonight! `#{conn.assigns.raw_body}`",
+          token: slack_bot_token(),
+          channel: "GQT3XE3EG"
+        })
+      )
     else
       Logger.info("Bad signature")
     end
