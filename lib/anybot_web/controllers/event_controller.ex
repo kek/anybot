@@ -37,6 +37,12 @@ defmodule AnybotWeb.EventController do
          slack_signature
        ) do
       Logger.info("Verified signature")
+
+      HTTPoison.post!("https://slack.com/api/chat.postMessage", %{
+        text: "Reminder: we've got a softball game tonight! `" <> conn.assigns.raw_body <> "`",
+        token: slack_bot_token(),
+        channel: "GQT3XE3EG"
+      })
     else
       Logger.info("Bad signature")
     end
@@ -68,5 +74,9 @@ defmodule AnybotWeb.EventController do
 
   defp slack_signing_secret do
     Application.get_env(:anybot, :slack_signing_secret)
+  end
+
+  defp slack_bot_token do
+    Application.get_env(:anybot, :slack_bot_token)
   end
 end
