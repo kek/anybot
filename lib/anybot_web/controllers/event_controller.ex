@@ -16,6 +16,24 @@ defmodule AnybotWeb.EventController do
     end
   end
 
+  def create(conn, %{"event" => %{"type" => "app_mention", "text" => text, "channel" => channel}}) do
+    Logger.info("App mention: " <> inspect(conn.assigns.raw_body))
+
+    if Slack.verify(conn) do
+      Logger.info("Verified signature")
+
+      Slack.post_message(
+        "Yes, #{text}",
+        channel
+      )
+    else
+      Logger.info("Bad signature")
+    end
+
+    conn
+    |> send_resp(200, "ok")
+  end
+
   def create(conn, _) do
     Logger.info("Unhandled event: " <> inspect(conn.assigns.raw_body))
 
