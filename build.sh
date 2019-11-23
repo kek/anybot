@@ -5,4 +5,4 @@ mix deps.get
 npm run deploy --prefix ./assets
 mkdir -p priv/static
 mix phx.digest
-MIX_ENV=prod yes | mix release
+MIX_ENV=prod mix release
