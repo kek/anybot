@@ -41,7 +41,8 @@ defmodule Anybot.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:httpoison, "~> 1.6"},
-      {:luerl, "~> 0.4.0"}
+      {:luerl, "~> 0.4.0"},
+      {:dialyxir, "~> 0.5.1"}
     ]
   end
 end
