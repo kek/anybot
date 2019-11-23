@@ -22,8 +22,11 @@ defmodule AnybotWeb.EventController do
     if Slack.verify(conn) do
       Logger.info("Verified signature")
 
+      code = String.replace(text, "@BOTT ", "")
+      result = Anybot.Lua.run(Anybot.Lua, code)
+
       Slack.post_message(
-        "Yes, #{text}",
+        "Yes, #{inspect(result)}",
         channel
       )
     else

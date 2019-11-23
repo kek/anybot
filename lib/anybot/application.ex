@@ -9,7 +9,8 @@ defmodule Anybot.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      AnybotWeb.Endpoint
+      AnybotWeb.Endpoint,
+      {Anybot.Lua, name: Anybot.Lua}
       # Starts a worker by calling: Anybot.Worker.start_link(arg)
       # {Anybot.Worker, arg},
     ]
