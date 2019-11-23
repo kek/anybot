@@ -1,6 +1,7 @@
 defmodule AnybotWeb.EventController do
   use AnybotWeb, :controller
   require Logger
+  alias Anybot.Slack
 
   def create(
         conn,
@@ -38,14 +39,9 @@ defmodule AnybotWeb.EventController do
        ) do
       Logger.info("Verified signature")
 
-      HTTPoison.post!(
-        "https://slack.com/api/chat.postMessage",
-        {:multipart,
-         [
-           {"text", "Reminder: we've got a softball game tonight! `#{conn.assigns.raw_body}`"},
-           {"token", slack_bot_token()},
-           {"channel", "GQT3XE3EG"}
-         ]}
+      Slack.post_message(
+        "Reminder: we've got a softball game tonight! `#{conn.assigns.raw_body}`",
+        "GQT3XE3EG"
       )
     else
       Logger.info("Bad signature")
@@ -78,9 +74,5 @@ defmodule AnybotWeb.EventController do
 
   defp slack_signing_secret do
     Application.get_env(:anybot, :slack_signing_secret)
-  end
-
-  defp slack_bot_token do
-    Application.get_env(:anybot, :slack_bot_token)
   end
 end
