@@ -7,8 +7,25 @@ defmodule Anybot.Lua do
   end
 
   def init([]) do
+    get = fn [url], lua ->
+      result = HTTPoison.get!(url)
+      {[result], lua}
+    end
+
+    decode = fn [json], lua ->
+      result = Jason.decode!(json)
+      {[result], lua}
+    end
+
     lua = :luerl_sandbox.init()
+    lua = :luerl.set_table([:get], get, lua)
+    lua = :luerl.set_table([:decode], decode, lua)
+
     {:ok, %{lua: lua}}
+  end
+
+  def run(code) do
+    run(Anybot.Lua, code)
   end
 
   def run(code_runner, code) do
@@ -17,7 +34,7 @@ defmodule Anybot.Lua do
 
   def handle_call({:run, code}, _, state) do
     {result, lua} =
-      case :luerl_sandbox.run(code, state.lua, 100_000) do
+      case :luerl_sandbox.run(code, state.lua, 1_000_000) do
         {:error, reason} ->
           {reason, state.lua}
 
