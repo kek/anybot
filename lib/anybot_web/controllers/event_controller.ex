@@ -23,6 +23,7 @@ defmodule AnybotWeb.EventController do
       Logger.info("Verified signature")
 
       code = String.replace(text, "@BOTT ", "")
+      Logger.info("Running #{code}")
       result = Anybot.Lua.run(Anybot.Lua, code)
 
       Slack.post_message(
