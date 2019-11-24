@@ -25,8 +25,9 @@ defmodule AnybotWeb.EventController do
       code =
         text
         |> String.replace(~r/<@[A-Z0-9]+> /, "")
-        |> String.replace("\\u201", "\"")
-        |> String.replace("\\u2019", "'")
+        |> String.replace("\u201", "\"")
+        |> String.replace("\u2019", "'")
+        |> String.replace("\u2014", "--")
 
       Logger.info("Running #{inspect(code)}")
       result = Anybot.Lua.run(Anybot.Lua, code)
