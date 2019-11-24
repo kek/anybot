@@ -32,10 +32,7 @@ defmodule AnybotWeb.EventController do
       Logger.info("Running #{inspect(code)}")
       result = Anybot.Lua.run(Anybot.Lua, code)
 
-      Slack.post_message(
-        "Yes, #{inspect(result)}",
-        channel
-      )
+      Slack.post_message(inspect(result), channel)
     else
       Logger.info("Bad signature")
     end
