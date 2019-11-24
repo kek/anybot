@@ -28,7 +28,8 @@ defmodule AnybotWeb.EventController do
         |> String.replace("\u201d", "\"")
         |> String.replace("\u2019", "'")
         |> String.replace("\u2014", "--")
-        |> String.replace(~r/<[^|]+([^|]+)\|\1>/, "\\1")
+        |> String.replace(~r/\<(https?:\/\/[^>]+)\>/, "\\1")
+        |> String.replace(~r/<[^ |]+([^ |]+)\|\1>/, "\\1")
 
       Logger.info("Running #{inspect(code)}")
       result = Anybot.Lua.run(Anybot.Lua, code)
