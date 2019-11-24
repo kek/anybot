@@ -25,7 +25,7 @@ defmodule AnybotWeb.EventController do
       code =
         text
         |> String.replace(~r/<@[A-Z0-9]+> /, "")
-        |> String.replace("\u201", "\"")
+        |> String.replace("\u201d", "\"")
         |> String.replace("\u2019", "'")
         |> String.replace("\u2014", "--")
 
