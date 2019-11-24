@@ -22,7 +22,12 @@ defmodule AnybotWeb.EventController do
     if Slack.verify(conn) do
       Logger.info("Verified signature")
 
-      code = String.replace(text, ~r/<@[A-Z0-9]+> /, "")
+      code =
+        text
+        |> String.replace(~r/<@[A-Z0-9]+> /, "")
+        |> String.replace("\\u201", "\"")
+        |> String.replace("\\u2019", "'")
+
       Logger.info("Running #{inspect(code)}")
       result = Anybot.Lua.run(Anybot.Lua, code)
 
