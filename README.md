@@ -1,6 +1,18 @@
 # Anybot
 
-## Future commands
+## API available to bots
+
+## `get(<url>)`
+
+Retrieve resource at an URL. Text of response can be retrieved like so: `get(url)["body"]`.
+
+## `decode(<data>)`
+
+Decode a string of JSON data. Example: `decode(get("http://example.com/example.json")["body"])`
+
+## `post(url, data)` (planned)
+
+## Persistence commands (planned)
 
 ### `!save <name> <program>`
 Save a program and run it. The code will be run again at restart.
