@@ -1,19 +1,18 @@
 # Anybot
 
-To start your Phoenix server:
+## Future commands
 
-  * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+### `!save <name> <program>`
+Save a program and run it. The code will be run again at restart.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+### `!delete <name>`
+Removes a program so that it won't be run at next restart.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### `!list`
+List saved programs.
 
-## Learn more
+### `!show <name>`
+Shows the code for a saved program.
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+### `!help`
+Display help for these commands.
