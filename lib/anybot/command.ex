@@ -1,4 +1,15 @@
 defmodule Anybot.Command do
+  def help_text do
+    """
+    !save <name> <program>
+    !delete <name>
+    !show <name>
+    !list
+    !help
+    !help
+    """
+  end
+
   def parse("!save " <> rest) do
     name = rest |> String.split() |> Enum.at(0)
     code = String.trim_leading(rest, name <> " ")

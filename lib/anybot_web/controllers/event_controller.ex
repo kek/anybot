@@ -42,6 +42,9 @@ defmodule AnybotWeb.EventController do
 
         {:error, message} ->
           Slack.post_message(message, channel)
+
+        {:help} ->
+          Slack.post_message(Anybot.Command.help_text(), channel)
       end
     else
       Logger.info("Bad signature")
