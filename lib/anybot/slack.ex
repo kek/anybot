@@ -2,15 +2,16 @@ defmodule Anybot.Slack do
   require Logger
 
   def post_message(text, channel) do
-    HTTPoison.post!(
-      "https://slack.com/api/chat.postMessage",
-      {:multipart,
-       [
-         {"text", text},
-         {"token", slack_bot_token()},
-         {"channel", channel}
-       ]}
-    )
+    %HTTPoison.Response{status_code: 200} =
+      HTTPoison.post!(
+        "https://slack.com/api/chat.postMessage",
+        {:multipart,
+         [
+           {"text", text},
+           {"token", slack_bot_token()},
+           {"channel", channel}
+         ]}
+      )
   end
 
   def verify(conn) do
