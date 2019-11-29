@@ -43,7 +43,9 @@ defmodule Anybot.MixProject do
       {:httpoison, "~> 1.6"},
       {:luerl, "~> 0.4.0"},
       {:dialyxir, "~> 0.5.1"},
-      {:remixed_remix, "~> 2.0"}
+      {:remixed_remix, "~> 2.0"},
+      {:phoenix_live_view, "~> 0.4.0"},
+      {:floki, ">= 0.0.0", only: :test}
     ]
   end
 end

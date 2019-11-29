@@ -14,7 +14,10 @@ secret_key_base =
 config :anybot, AnybotWeb.Endpoint,
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
   secret_key_base: secret_key_base,
-  server: true
+  server: true,
+  live_view: [
+    signing_salt: System.fetch_env!("LIVE_VIEW_SIGNING_SALT")
+  ]
 
 # ## Using releases (Elixir v1.9+)
 #

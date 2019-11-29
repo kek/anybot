@@ -1,6 +1,8 @@
 defmodule AnybotWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :anybot
 
+  socket "/live", Phoenix.LiveView.Socket
+
   socket "/socket", AnybotWeb.UserSocket,
     websocket: true,
     longpoll: false

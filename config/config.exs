@@ -12,7 +12,10 @@ config :anybot, AnybotWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "x6eU9o3O0CPYPrPWNJKsbPmC9XZ3CQnN25ubRVmldbpp62vivsxtMw4zjI/gcqOq",
   render_errors: [view: AnybotWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Anybot.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Anybot.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "N3I91fX2IcspsJUlywyBB7tSKE/NiWJ0"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
