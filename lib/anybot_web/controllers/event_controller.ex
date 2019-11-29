@@ -22,7 +22,7 @@ defmodule AnybotWeb.EventController do
     if Slack.verify(conn) do
       Logger.info("Verified signature")
 
-      code =
+      input =
         text
         |> String.replace(~r/<@[A-Z0-9]+> /, "")
         |> String.replace("\u201d", "\"")
@@ -31,10 +31,18 @@ defmodule AnybotWeb.EventController do
         |> String.replace(~r/<[^ |]+([^ |]+)\|\1>/, "\\1")
         |> String.replace(~r/\<(https?:\/\/[^>]+)\>/, "\\1")
 
-      Logger.info("Running #{inspect(code)}")
-      result = Anybot.Lua.run(Anybot.Lua, code)
+      Logger.info("Running #{inspect(input)}")
 
-      Slack.post_message(inspect(result), channel)
+      case Anybot.Command.parse(input) do
+        {:run, code} ->
+          code
+          |> Anybot.Lua.run(code)
+          |> inspect()
+          |> Slack.post_message(channel)
+
+        {:error, message} ->
+          Slack.post_message(message, channel)
+      end
     else
       Logger.info("Bad signature")
     end
