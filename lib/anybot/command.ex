@@ -6,7 +6,6 @@ defmodule Anybot.Command do
     !show <name>
     !list
     !help
-    !help
     """
   end
 
