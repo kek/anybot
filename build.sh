@@ -2,7 +2,7 @@
 
 . ~/.anybot.config.sh
 mix deps.get
+npm install --prefix assets
 npm run deploy --prefix ./assets
-mkdir -p priv/static
 mix phx.digest
 MIX_ENV=prod mix release --overwrite
