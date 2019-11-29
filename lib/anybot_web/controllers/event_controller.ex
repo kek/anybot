@@ -36,7 +36,7 @@ defmodule AnybotWeb.EventController do
       case Anybot.Command.parse(input) do
         {:run, code} ->
           code
-          |> Anybot.Lua.run(code)
+          |> Anybot.Lua.run()
           |> inspect()
           |> Slack.post_message(channel)
 
