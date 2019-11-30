@@ -1,4 +1,5 @@
 defmodule Anybot.Storage do
+  @spec put(binary, any) :: :ok | {:error, :invalid_key}
   def put(key, value) do
     with :ok <- validate_key(key) do
       :ok = File.mkdir_p(storage_path())
@@ -7,6 +8,7 @@ defmodule Anybot.Storage do
     end
   end
 
+  @spec get(binary) :: nil | binary | {:error, :invalid_key}
   def get(key) do
     with :ok <- validate_key(key) do
       path = Path.join(storage_path(), key)
@@ -18,6 +20,7 @@ defmodule Anybot.Storage do
     end
   end
 
+  @spec delete(binary) :: :ok | {:error, atom}
   def delete(key) do
     with :ok <- validate_key(key) do
       path = Path.join(storage_path(), key)
@@ -25,6 +28,7 @@ defmodule Anybot.Storage do
     end
   end
 
+  @spec keys :: [binary]
   def keys() do
     File.mkdir_p(storage_path())
     File.ls!(storage_path())
