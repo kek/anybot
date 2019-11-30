@@ -34,8 +34,15 @@ defmodule AnybotWeb.EventController do
       Logger.info("Running #{inspect(input)}")
 
       case Anybot.Command.parse(input) do
-        {:run, code} ->
+        {:eval, code} ->
           code
+          |> Anybot.Lua.run()
+          |> inspect()
+          |> Slack.post_message(channel)
+
+        {:run, name} ->
+          name
+          |> Storage.get()
           |> Anybot.Lua.run()
           |> inspect()
           |> Slack.post_message(channel)

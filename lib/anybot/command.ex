@@ -4,6 +4,7 @@ defmodule Anybot.Command do
     !save <name> <program>
     !delete <name>
     !show <name>
+    !run <program>
     !list
     !help
     """
@@ -16,16 +17,13 @@ defmodule Anybot.Command do
   end
 
   def parse("!delete " <> name), do: {:delete, name}
-
   def parse("!list"), do: {:list}
-
   def parse("!help"), do: {:help}
-
   def parse("!show " <> name), do: {:show, name}
-
+  def parse("!run " <> name), do: {:run, name}
   def parse(command = "!" <> _), do: {:error, "Unknown command #{command}"}
 
   def parse(input) do
-    {:run, input}
+    {:eval, input}
   end
 end
