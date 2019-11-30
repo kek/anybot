@@ -61,11 +61,11 @@ defmodule AnybotWeb.EventController do
               Slack.post_message("I don't know anything.", channel)
 
             keys ->
-              message = "These are the programs I know:\n"
-
-              keys
-              |> Enum.map(fn item -> "- #{item}" end)
-              |> Enum.join("\n")
+              message =
+                "These are the programs I know:\n" <>
+                  (keys
+                   |> Enum.map(fn item -> "- #{item}" end)
+                   |> Enum.join("\n"))
 
               Slack.post_message(message, channel)
           end
