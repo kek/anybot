@@ -35,36 +35,35 @@ defmodule AnybotWeb.EventController do
 
       case Anybot.Command.parse(input) do
         {:eval, code} ->
-          code
-          |> Anybot.Lua.run()
-          |> inspect()
-          |> Slack.post_message(channel)
+          result = Anybot.Lua.run(code)
+          message = "`#{result}`"
+          Slack.post_message(message, channel)
 
         {:run, name} ->
-          name
-          |> Storage.get()
-          |> Anybot.Lua.run()
-          |> inspect()
-          |> Slack.post_message(channel)
+          code = Storage.get(name)
+          result = Anybot.Lua.run(code)
+          message = "`#{result}`"
+          Slack.post_message(message, channel)
 
         {:save, name, program} ->
           :ok = Storage.put(name, program)
           Slack.post_message("Saved #{name}", channel)
 
         {:list} ->
-          list = Storage.keys()
-          Slack.post_message(inspect(list), channel)
+          Storage.keys()
+          |> Enum.map(fn item -> "* #{item}\n" end)
+          |> Slack.post_message(channel)
 
         {:show, name} ->
           program = Storage.get(name)
-          Slack.post_message(program, channel)
+          Slack.post_message("#{name}:\n```#{program}```", channel)
 
         {:delete, name} ->
           Storage.delete(name)
           Slack.post_message("Deleted #{name}", channel)
 
         {:error, message} ->
-          Slack.post_message(message, channel)
+          Slack.post_message("Error: #{message}", channel)
 
         {:help} ->
           Slack.post_message(Anybot.Command.help_text(), channel)
