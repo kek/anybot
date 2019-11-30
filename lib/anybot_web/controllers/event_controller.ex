@@ -71,12 +71,22 @@ defmodule AnybotWeb.EventController do
           end
 
         {:show, name} ->
-          program = Storage.get(name)
-          Slack.post_message("#{name}:\n```#{program}```", channel)
+          case Storage.get(name) do
+            {:error, :invalid_key} ->
+              Slack.post_message("Invalid key: #{name}", channel)
+
+            program ->
+              Slack.post_message("#{name}:\n```#{program}```", channel)
+          end
 
         {:delete, name} ->
-          Storage.delete(name)
-          Slack.post_message("Deleted #{name}", channel)
+          case Storage.delete(name) do
+            {:error, :invalid_key} ->
+              Slack.post_message("Invalid key: #{name}", channel)
+
+            :ok ->
+              Slack.post_message("Deleted #{name}", channel)
+          end
 
         {:error, message} ->
           Slack.post_message("Error: `#{inspect(message)}`", channel)
