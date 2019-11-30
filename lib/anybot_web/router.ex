@@ -1,5 +1,6 @@
 defmodule AnybotWeb.Router do
   use AnybotWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -17,7 +18,7 @@ defmodule AnybotWeb.Router do
   scope "/", AnybotWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", PageLive, session: [:user_id]
   end
 
   scope "/event", AnybotWeb do
