@@ -1,7 +1,7 @@
 defmodule AnybotWeb.EventController do
   use AnybotWeb, :controller
   require Logger
-  alias Anybot.Slack
+  alias Anybot.{Slack, Storage}
 
   def create(conn, %{"challenge" => challenge, "type" => "url_verification"} = params) do
     Logger.debug(inspect(conn.req_headers))
@@ -39,6 +39,22 @@ defmodule AnybotWeb.EventController do
           |> Anybot.Lua.run()
           |> inspect()
           |> Slack.post_message(channel)
+
+        {:save, name, program} ->
+          :ok = Storage.put(name, program)
+          Slack.post_message("Saved #{name}", channel)
+
+        {:list} ->
+          list = Storage.keys()
+          Slack.post_message(inspect(list), channel)
+
+        {:show, name} ->
+          program = Storage.get(name)
+          Slack.post_message(program, channel)
+
+        {:delete, name} ->
+          Storage.delete(name)
+          Slack.post_message("Deleted #{name}", channel)
 
         {:error, message} ->
           Slack.post_message(message, channel)

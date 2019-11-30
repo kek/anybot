@@ -18,6 +18,13 @@ defmodule Anybot.Storage do
     end
   end
 
+  def delete(key) do
+    with :ok <- validate_key(key) do
+      path = Path.join(storage_path(), key)
+      File.rm(path)
+    end
+  end
+
   def keys() do
     File.mkdir_p(storage_path())
     File.ls!(storage_path())
