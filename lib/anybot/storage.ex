@@ -18,6 +18,11 @@ defmodule Anybot.Storage do
     end
   end
 
+  def keys() do
+    File.mkdir_p(storage_path())
+    File.ls!(storage_path())
+  end
+
   defp validate_key(key) do
     case key =~ ~r/^[a-z]+$/ do
       true -> :ok
