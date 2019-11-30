@@ -41,10 +41,15 @@ defmodule AnybotWeb.EventController do
           Slack.post_message(message, channel)
 
         {:run, name} ->
-          code = Storage.get(name)
-          result = Anybot.Lua.run(code)
-          message = "#{name} → `#{inspect(result)}`"
-          Slack.post_message(message, channel)
+          case Storage.get(name) do
+            {:error, :invalid_key} ->
+              Slack.post_message("Invalid key: #{name}", channel)
+
+            code ->
+              result = Anybot.Lua.run(code)
+              message = "#{name} → `#{inspect(result)}`"
+              Slack.post_message(message, channel)
+          end
 
         {:save, name, program} ->
           case Storage.put(name, program) do
