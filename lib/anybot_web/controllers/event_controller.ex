@@ -47,8 +47,13 @@ defmodule AnybotWeb.EventController do
           Slack.post_message(message, channel)
 
         {:save, name, program} ->
-          :ok = Storage.put(name, program)
-          Slack.post_message("Saved #{name}", channel)
+          case Storage.put(name, program) do
+            :ok ->
+              Slack.post_message("Saved #{name}", channel)
+
+            {:error, :invalid_key} ->
+              Slack.post_message("Invalid key: #{name}", channel)
+          end
 
         {:list} ->
           case Storage.keys() do
