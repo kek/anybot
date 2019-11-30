@@ -45,6 +45,9 @@ defmodule AnybotWeb.EventController do
             {:error, :invalid_key} ->
               Slack.post_message("Invalid key: #{name}", channel)
 
+            nil ->
+              Slack.post_message("I don't know anything about #{name}.", channel)
+
             code ->
               result = Anybot.Lua.run(code)
               message = "#{name} → `#{inspect(result)}`"
@@ -79,6 +82,9 @@ defmodule AnybotWeb.EventController do
           case Storage.get(name) do
             {:error, :invalid_key} ->
               Slack.post_message("Invalid key: #{name}", channel)
+
+            nil ->
+              Slack.post_message("I don't know anything about #{name}.", channel)
 
             program ->
               Slack.post_message("#{name}:\n```#{program}```", channel)
