@@ -36,13 +36,13 @@ defmodule AnybotWeb.EventController do
       case Anybot.Command.parse(input) do
         {:eval, code} ->
           result = Anybot.Lua.run(code)
-          message = "`#{result}`"
+          message = "`#{inspect(result)}`"
           Slack.post_message(message, channel)
 
         {:run, name} ->
           code = Storage.get(name)
           result = Anybot.Lua.run(code)
-          message = "`#{result}`"
+          message = "`#{inspect(result)}`"
           Slack.post_message(message, channel)
 
         {:save, name, program} ->
