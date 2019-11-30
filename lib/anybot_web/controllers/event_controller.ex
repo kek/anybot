@@ -51,7 +51,8 @@ defmodule AnybotWeb.EventController do
 
         {:list} ->
           Storage.keys()
-          |> Enum.map(fn item -> "* #{item}\n" end)
+          |> Enum.map(fn item -> "* #{item}" end)
+          |> Enum.join("\n")
           |> Slack.post_message(channel)
 
         {:show, name} ->
