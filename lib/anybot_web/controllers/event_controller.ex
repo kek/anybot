@@ -3,6 +3,7 @@ defmodule AnybotWeb.EventController do
   require Logger
   alias Anybot.{Slack, Storage}
 
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"challenge" => challenge, "type" => "url_verification"} = params) do
     Logger.debug(inspect(conn.req_headers))
     Logger.debug(inspect(params))
@@ -50,10 +51,19 @@ defmodule AnybotWeb.EventController do
           Slack.post_message("Saved #{name}", channel)
 
         {:list} ->
-          Storage.keys()
-          |> Enum.map(fn item -> "* #{item}" end)
-          |> Enum.join("\n")
-          |> Slack.post_message(channel)
+          case Storage.keys() do
+            [] ->
+              Slack.post_message("I don't know anything.", channel)
+
+            keys ->
+              message = "These are the programs I know:\n"
+
+              keys
+              |> Enum.map(fn item -> "- #{item}" end)
+              |> Enum.join("\n")
+
+              Slack.post_message(message, channel)
+          end
 
         {:show, name} ->
           program = Storage.get(name)
@@ -77,7 +87,7 @@ defmodule AnybotWeb.EventController do
     |> send_resp(200, "ok")
   end
 
-  def create(conn, _) do
+  def create(conn, %{}) do
     Logger.info("Unhandled event: " <> inspect(conn.assigns.raw_body))
 
     if Slack.verify(conn) do
