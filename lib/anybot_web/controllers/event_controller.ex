@@ -63,7 +63,7 @@ defmodule AnybotWeb.EventController do
           Slack.post_message("Deleted #{name}", channel)
 
         {:error, message} ->
-          Slack.post_message("Error: #{message}", channel)
+          Slack.post_message("Error: `#{inspect(message)}`", channel)
 
         {:help} ->
           Slack.post_message(Anybot.Command.help_text(), channel)
