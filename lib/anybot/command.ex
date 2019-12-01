@@ -1,29 +1,78 @@
 defmodule Anybot.Command do
-  def help_text do
-    """
-    !save <name> <program>
-    !delete <name>
-    !show <name>
-    !run <program>
-    !list
-    !help
-    """
+  alias Anybot.{Storage, Lua}
+
+  @spec perform(
+          {:help}
+          | {:list}
+          | {:delete, binary}
+          | {:error, any}
+          | {:eval, binary}
+          | {:run, binary}
+          | {:show, binary}
+          | {:save, binary, binary}
+        ) :: {:ok, binary}
+  def perform({:eval, code}) do
+    result = Lua.run(code)
+    message = "`#{code}` → `#{inspect(result)}`"
+    {:ok, message}
   end
 
-  def parse("!save " <> rest) do
-    name = rest |> String.split() |> Enum.at(0)
-    code = String.trim_leading(rest, name <> " ")
-    {:save, name, code}
+  def perform({:run, name}) do
+    case Storage.get(name) do
+      {:error, :invalid_key} ->
+        {:ok, "Invalid key: #{name}"}
+
+      nil ->
+        {:ok, "I don't know anything about #{name}."}
+
+      code ->
+        result = Anybot.Lua.run(code)
+        message = "#{name} → `#{inspect(result)}`"
+        {:ok, message}
+    end
   end
 
-  def parse("!delete " <> name), do: {:delete, name}
-  def parse("!list"), do: {:list}
-  def parse("!help"), do: {:help}
-  def parse("!show " <> name), do: {:show, name}
-  def parse("!run " <> name), do: {:run, name}
-  def parse(command = "!" <> _), do: {:error, "Unknown command #{command}"}
+  def perform({:save, name, program}) do
+    case Storage.put(name, program) do
+      :ok -> {:ok, "Saved #{name}"}
+      {:error, :invalid_key} -> {:ok, "Invalid key: #{name}"}
+    end
+  end
 
-  def parse(input) do
-    {:eval, input}
+  def perform({:list}) do
+    case Storage.keys() do
+      [] -> {:ok, "I don't know anything."}
+      keys -> {:ok, format_program_list(keys)}
+    end
+  end
+
+  def perform({:show, name}) do
+    case Storage.get(name) do
+      {:error, :invalid_key} -> {:ok, "Invalid key: #{name}"}
+      nil -> {:ok, "I don't know anything about #{name}."}
+      program -> {:ok, "#{name}:\n```#{program}```"}
+    end
+  end
+
+  def perform({:delete, name}) do
+    case Storage.delete(name) do
+      {:error, :invalid_key} -> {:ok, "Invalid key: #{name}"}
+      :ok -> {:ok, "Deleted #{name}"}
+    end
+  end
+
+  def perform({:error, message}) do
+    {:ok, "Error: `#{inspect(message)}`"}
+  end
+
+  def perform({:help}) do
+    {:ok, Anybot.Parser.help_text()}
+  end
+
+  defp format_program_list(keys) do
+    "These are the programs I know:\n" <>
+      (keys
+       |> Enum.map(fn item -> "- #{item}" end)
+       |> Enum.join("\n"))
   end
 end

@@ -1,6 +1,7 @@
 defmodule Anybot.Slack do
   require Logger
 
+  @spec post_message(binary, binary) :: HTTPoison.Response.t()
   def post_message(text, channel) do
     %HTTPoison.Response{status_code: 200} =
       HTTPoison.post!(
@@ -14,6 +15,7 @@ defmodule Anybot.Slack do
       )
   end
 
+  @spec verify(Plug.Conn.t()) :: boolean
   def verify(conn) do
     [slack_signature] = Plug.Conn.get_req_header(conn, "x-slack-signature")
     [slack_request_timestamp] = Plug.Conn.get_req_header(conn, "x-slack-request-timestamp")
