@@ -13,7 +13,7 @@ defmodule Anybot.Parser do
   def parse("!save " <> rest) do
     name = rest |> String.split() |> Enum.at(0)
     code = String.trim_leading(rest, name <> " ")
-    {:save, name, code}
+    {:save, name, fix_slack_input(code)}
   end
 
   def parse("!delete " <> name), do: {:delete, name}
@@ -24,6 +24,14 @@ defmodule Anybot.Parser do
   def parse(command = "!" <> _), do: {:error, "Unknown command #{command}"}
 
   def parse(input) do
-    {:eval, input}
+    {:eval, fix_slack_input(input)}
+  end
+
+  defp fix_slack_input(input) do
+    input
+    |> String.replace("“", "\"")
+    |> String.replace("“", "\"")
+    |> String.replace("‘", "\"")
+    |> String.replace("’", "\"")
   end
 end
