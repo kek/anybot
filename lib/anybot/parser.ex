@@ -31,7 +31,7 @@ defmodule Anybot.Parser do
     input
     |> String.replace("“", "\"")
     |> String.replace("“", "\"")
-    |> String.replace("‘", "\"")
-    |> String.replace("’", "\"")
+    |> String.replace("‘", "\'")
+    |> String.replace("’", "\'")
   end
 end
