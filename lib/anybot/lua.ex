@@ -34,7 +34,7 @@ defmodule Anybot.Lua do
 
   def handle_call({:run, code}, _, state) do
     {result, lua} =
-      case :luerl_sandbox.run(code, state.lua, 1_000_000) do
+      case :luerl_sandbox.run(code, state.lua, 10_000_000) do
         {:error, reason} ->
           {reason, state.lua}
 
