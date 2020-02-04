@@ -33,5 +33,6 @@ defmodule Anybot.Parser do
     |> String.replace("“", "\"")
     |> String.replace("‘", "\'")
     |> String.replace("’", "\'")
+    |> HtmlEntities.decode()
   end
 end

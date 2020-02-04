@@ -17,4 +17,8 @@ defmodule Anybot.ParserTest do
   test "Don't know" do
     assert Anybot.Parser.parse("!something") == {:error, "Unknown command !something"}
   end
+
+  test "Decodes entities" do
+    assert Anybot.Parser.parse("return 1 &lt;&gt; 0") == {:eval, "return 1 <> 0"}
+  end
 end
