@@ -1,10 +1,22 @@
-<%= for {name, code} <- @programs do %>
-    <h2><%= name %></h2>
-    <p><code><%= code %></code></p>
+<%= for program <- @programs do %>
+    <h2><%= program.name %>
+    <%= form_for :program, "#", [phx_change: :validate, phx_submit: :delete], fn f -> %>
+        <%= hidden_input f, :name, value: program.name %>
+        <%= textarea f, :code, value: program.code, style: "margin: 0px 0px 15px; height: 200px; width: 767px;" %>
+        <%= error_tag f, :code %>
+        <%= submit "Delete" %>
+    <% end %>
 <% end %>
+
+<%= form_for :new_program, "#", [phx_submit: :new_program], fn f -> %>
+    <%= label f, "New program name" %>
+    <%= text_input f, :name %>
+    <%= submit "Create new" %>
+<% end %>
+
 <% inspect @github_profile %>
-    <%= if @github_profile do %>
-<%= @github_profile.id %>
+<%= if @github_profile do %>
+    Greetings <%= @github_profile.login %>
 <% else %>
     <a href="/login">Log in</a>
 <% end %>

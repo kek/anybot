@@ -28,7 +28,8 @@ config :anybot,
   slack_client_secret: System.get_env("SLACK_CLIENT_SECRET"),
   slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET"),
   slack_bot_token: System.get_env("SLACK_BOT_TOKEN"),
-  storage_directory: Path.join(System.get_env("HOME"), ".anybot-storage")
+  storage_directory: Path.join(System.get_env("HOME"), ".anybot-storage"),
+  authorized_users: System.get_env("AUTHORIZED_GITHUB_USERS", "") |> String.split(",")
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
