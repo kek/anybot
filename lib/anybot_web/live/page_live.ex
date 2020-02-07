@@ -9,13 +9,23 @@ defmodule AnybotWeb.PageLive do
       <h2><%= name %></h2>
       <p><code><%= code %></code></p>
     <% end %>
+    <% inspect @github_profile %>
+      <%= if @github_profile do %>
+    <%= @github_profile.id %>
+    <% else %>
+      <a href="/login">Log in</a>
+    <% end %>
     """
   end
 
   @spec mount(map, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(%{}, socket) do
+  def mount(%{github_profile: github_profile}, socket) do
     if connected?(socket), do: :timer.send_interval(1000, self(), :update)
-    {:ok, assign(socket, :programs, programs())}
+
+    {:ok,
+     socket
+     |> assign(:github_profile, github_profile)
+     |> assign(:programs, programs())}
   end
 
   @spec handle_info(:update, Phoenix.LiveView.Socket.t()) ::

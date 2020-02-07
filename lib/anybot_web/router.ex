@@ -18,7 +18,9 @@ defmodule AnybotWeb.Router do
   scope "/", AnybotWeb do
     pipe_through :browser
 
-    live "/", PageLive, session: [:user_id]
+    live "/", PageLive, session: [:user_id, :github_profile]
+    get "/login", PageController, :index
+    get "/auth/github/callback", GithubAuthController, :index
   end
 
   scope "/event", AnybotWeb do
