@@ -1,0 +1,10 @@
+<%= for {name, code} <- @programs do %>
+    <h2><%= name %></h2>
+    <p><code><%= code %></code></p>
+<% end %>
+<% inspect @github_profile %>
+    <%= if @github_profile do %>
+<%= @github_profile.id %>
+<% else %>
+    <a href="/login">Log in</a>
+<% end %>

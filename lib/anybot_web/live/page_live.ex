@@ -4,18 +4,7 @@ defmodule AnybotWeb.PageLive do
 
   @spec render(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
-    ~L"""
-    <%= for {name, code} <- @programs do %>
-      <h2><%= name %></h2>
-      <p><code><%= code %></code></p>
-    <% end %>
-    <% inspect @github_profile %>
-      <%= if @github_profile do %>
-    <%= @github_profile.id %>
-    <% else %>
-      <a href="/login">Log in</a>
-    <% end %>
-    """
+    Phoenix.View.render(AnybotWeb.PageView, "page.html", assigns)
   end
 
   @spec mount(map, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
