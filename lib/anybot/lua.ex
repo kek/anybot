@@ -2,6 +2,8 @@ defmodule Anybot.Lua do
   use GenServer
   require Logger
 
+  @max_reductions 10_000_000
+
   def start_link(options \\ []) do
     GenServer.start_link(__MODULE__, [], options)
   end
@@ -17,9 +19,24 @@ defmodule Anybot.Lua do
       {[result], lua}
     end
 
+    run = fn [program_name], lua ->
+      code = Anybot.Storage.get(program_name)
+
+      case :luerl_sandbox.run(code, lua, @max_reductions) do
+        {:error, reason} ->
+          {["#{reason} error in #{program_name}"], lua}
+
+        {result, lua} ->
+          # IO.inspect(program_name, label: "Run ok")
+          # IO.inspect(result, label: "Run result")
+          {result, lua}
+      end
+    end
+
     lua = :luerl_sandbox.init()
     lua = :luerl.set_table([:get], get, lua)
     lua = :luerl.set_table([:decode], decode, lua)
+    lua = :luerl.set_table([:run], run, lua)
 
     {:ok, %{lua: lua}}
   end
@@ -33,12 +50,19 @@ defmodule Anybot.Lua do
   end
 
   def handle_call({:run, code}, _, state) do
+    # IO.inspect(code, label: "trying to run")
+
     {result, lua} =
-      case :luerl_sandbox.run(code, state.lua, 10_000_000) do
+      case :luerl_sandbox.run(code, state.lua, @max_reductions) do
         {:error, reason} ->
+          # IO.inspect("error", label: code)
+          # IO.inspect(reason, label: code)
+
           {reason, state.lua}
 
         {result, lua} ->
+          # IO.inspect(result, label: code)
+
           {result, lua}
       end
 
