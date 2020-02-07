@@ -27,16 +27,32 @@ defmodule Anybot.Lua do
           {["#{reason} error in #{program_name}"], lua}
 
         {result, lua} ->
-          # IO.inspect(program_name, label: "Run ok")
-          # IO.inspect(result, label: "Run result")
+          # Perhaps put result in a table/list
           {result, lua}
       end
+    end
+
+    make_table = fn _, lua ->
+      {res, lua} = :luerl.do("return {}", lua)
+      {[res], lua}
+    end
+
+    make_function = fn _, lua ->
+      {res, lua} = :luerl.do("return function() return 1 end", lua)
+      {[res], lua}
+    end
+
+    make_native_function = fn _, lua ->
+      {[fn [] -> ["ok"] end], lua}
     end
 
     lua = :luerl_sandbox.init()
     lua = :luerl.set_table([:get], get, lua)
     lua = :luerl.set_table([:decode], decode, lua)
     lua = :luerl.set_table([:run], run, lua)
+    lua = :luerl.set_table([:make_table], make_table, lua)
+    lua = :luerl.set_table([:make_function], make_function, lua)
+    lua = :luerl.set_table([:make_native_function], make_native_function, lua)
 
     {:ok, %{lua: lua}}
   end
@@ -50,19 +66,12 @@ defmodule Anybot.Lua do
   end
 
   def handle_call({:run, code}, _, state) do
-    # IO.inspect(code, label: "trying to run")
-
     {result, lua} =
       case :luerl_sandbox.run(code, state.lua, @max_reductions) do
         {:error, reason} ->
-          # IO.inspect("error", label: code)
-          # IO.inspect(reason, label: code)
-
           {reason, state.lua}
 
         {result, lua} ->
-          # IO.inspect(result, label: code)
-
           {result, lua}
       end
 
