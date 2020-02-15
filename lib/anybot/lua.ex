@@ -19,7 +19,7 @@ defmodule Anybot.Lua do
       {[result], lua}
     end
 
-    run = fn [program_name], lua ->
+    require_program = fn [program_name], lua ->
       code = Anybot.Storage.get(program_name)
 
       case :luerl_sandbox.run(code, lua, @max_reductions) do
@@ -49,7 +49,7 @@ defmodule Anybot.Lua do
     lua = :luerl_sandbox.init()
     lua = :luerl.set_table([:get], get, lua)
     lua = :luerl.set_table([:decode], decode, lua)
-    lua = :luerl.set_table([:run], run, lua)
+    lua = :luerl.set_table([:require], require_program, lua)
     lua = :luerl.set_table([:make_table], make_table, lua)
     lua = :luerl.set_table([:make_function], make_function, lua)
     lua = :luerl.set_table([:make_native_function], make_native_function, lua)

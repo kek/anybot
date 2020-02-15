@@ -15,36 +15,36 @@ defmodule Anybot.LuaTest do
     assert Lua.run(runner, "local x = 0") == []
   end
 
-  test "running stored code" do
+  test "requiring stored code" do
     {:ok, runner} = Lua.start_link()
 
     :ok = Storage.put("two", "return 1+1")
-    assert Lua.run(runner, "return run('two')") == [2.0]
+    assert Lua.run(runner, "return require('two')") == [2.0]
   end
 
-  test "running stored code with a side effect" do
+  test "requiring stored code with a side effect" do
     {:ok, runner} = Lua.start_link()
 
     :ok = Storage.put("inc", "x = x + 1; return 0")
-    assert Lua.run(runner, "x = 1; run('inc'); return x") == [2.0]
+    assert Lua.run(runner, "x = 1; require('inc'); return x") == [2.0]
   end
 
   @tag :pending
-  test "running stored code that returns a table" do
+  test "requiring stored code that returns a table" do
     {:ok, runner} = Lua.start_link()
 
     :ok = Storage.put("table", "return {SURPRISE = 12345678}")
-    [table] = Lua.run(runner, "return run('table')")
+    [table] = Lua.run(runner, "return require('table')")
     assert table == {:tref, 4}
     lua = :sys.get_state(runner).lua
     IO.inspect(:luerl_emul.get_table_keys(table, lua))
   end
 
-  test "running stored code that contains an error" do
+  test "requiring stored code that contains an error" do
     {:ok, runner} = Lua.start_link()
 
     :ok = Storage.put("two", "return 1/0")
-    assert Lua.run(runner, "return run('two') .. '!'") == ["badarith error in two!"]
+    assert Lua.run(runner, "return require('two') .. '!'") == ["badarith error in two!"]
   end
 
   test "returning a function" do
@@ -90,5 +90,11 @@ defmodule Anybot.LuaTest do
     code = Storage.get("two")
     assert code
     assert Lua.run(runner, code) == ["ok"]
+  end
+
+  test "Is require reserved?" do
+    {:ok, runner} = Lua.start_link()
+
+    assert Lua.run(runner, "require('test'); return 'ok'") == ["ok"]
   end
 end

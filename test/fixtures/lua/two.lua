@@ -1,2 +1,2 @@
-run("one")
+require("one")
 return Foo.value
