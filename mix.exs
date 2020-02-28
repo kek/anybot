@@ -42,7 +42,7 @@ defmodule Anybot.MixProject do
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:httpoison, "~> 1.6"},
       {:luerl, "~> 0.4.0"},
-      {:dialyxir, "~> 0.5.1"},
+      {:dialyxir, "~> 0.5.1", only: :dev},
       {:remixed_remix, "~> 2.0", only: :dev},
       {:phoenix_live_view, "~> 0.4.0"},
       {:floki, ">= 0.0.0", only: :test},
