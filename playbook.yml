@@ -46,14 +46,13 @@
     - name: gather facts now that host is available
       setup:
 
-    - name: install nginx
-      apt:
-        name: nginx
+    - apt: name=nginx state=latest
+    - apt: name=rsync state=latest
 
     - name: Update all packages
       apt: upgrade=dist update_cache=yes
 
     - name: copy release
-      copy:
+      synchronize:
         src: ./_build/prod/rel/anybot
         dest: /
