@@ -1,6 +1,10 @@
 # Anybot
 
-## API available to bots
+## API available to programs
+
+## `require(program)`
+
+Load another program's code.
 
 ## `get(<url>)`
 
@@ -12,19 +16,24 @@ Decode a string of JSON data. Example: `decode(get("http://example.com/example.j
 
 ## `post(url, data)` (planned)
 
-## Persistence commands (planned)
+## Commands for bots
 
 ### `!save <name> <program>`
-Save a program and run it. The code will be run again at restart.
+
+Save a program.
 
 ### `!delete <name>`
-Removes a program so that it won't be run at next restart.
+
+Removes a program.
 
 ### `!list`
+
 List saved programs.
 
 ### `!show <name>`
+
 Shows the code for a saved program.
 
 ### `!help`
+
 Display help for these commands.
