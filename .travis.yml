@@ -1,0 +1,11 @@
+os: linux
+language: elixir
+elixir: 1.10.2
+otp_release: 22.2.8
+script:
+  - mix test --trace || travis_terminate 1
+deploy:
+  provider: script
+  script: ./build.sh && ./deploy.sh
+  on:
+    branch: master
