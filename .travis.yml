@@ -7,7 +7,7 @@ cache:
     - _build
     - deps
 before_install:
-  - echo $DEPLOY_KEY > travis-deploy-key
+  - echo $DEPLOY_KEY_BASE64 | base64 --decode > travis-deploy-key
   - chmod go-rwx travis-deploy-key
 script:
   - mix test --trace || travis_terminate 1
