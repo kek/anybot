@@ -12,7 +12,7 @@ before_install:
   - pip install --user ansible
 script:
   - mix test --trace || travis_terminate 1
-  - ./cross-compile.sh
+  - ./build.sh
 deploy:
   skip_cleanup: true
   provider: script
