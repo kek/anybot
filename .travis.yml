@@ -7,6 +7,7 @@ cache:
     - _build
     - deps
 before_install:
+  - env
   - echo $DEPLOY_KEY_BASE64 | base64 --decode > travis-deploy-key
   - chmod go-rwx travis-deploy-key
   - pip install --user ansible
