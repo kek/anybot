@@ -5,17 +5,14 @@
   vars:
     ssh_keys: "{{ lookup('env','SSH_KEYS') }}"
 
-  # run:
-  # $ export DO_API_TOKEN=your-token
-  # then run this playbook to create droplet
   tasks:
     - digital_ocean_droplet:
-        unique_name: yes # "yes" makes it idempotent
-        region: ams3 # slug of the region you would like your server to be created in.
-        image: debian-10-x64 # slug of the image you would like the droplet created with.
+        unique_name: yes
+        region: ams3
+        image: debian-10-x64
         wait: yes
-        name: "bot" # name of the droplet
-        size_id: s-1vcpu-1gb # slug of the size you would like the droplet created with.
+        name: "bot"
+        size_id: s-1vcpu-1gb
         state: present
         ssh_keys: "{{ ssh_keys }}"
       register: created_droplet
