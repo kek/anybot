@@ -1,9 +1,9 @@
 server {
-        server_name veckanskatt.hopto.org;
+        server_name {{ domain_name }};
                 listen [::]:443 ssl ipv6only=on;
                 listen 443 ssl;
-                ssl_certificate /etc/letsencrypt/live/veckanskatt.hopto.org/fullchain.pem;
-                ssl_certificate_key /etc/letsencrypt/live/veckanskatt.hopto.org/privkey.pem;
+                ssl_certificate /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem;
+                ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
                 include /etc/letsencrypt/options-ssl-nginx.conf;
                 ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
@@ -19,12 +19,12 @@ server {
                 }
 }
 server {
-        if ($host = veckanskatt.hopto.org) {
+        if ($host = {{ domain_name }}) {
                 return 301 https://$host$request_uri;
         }
 
         listen 80 ;
         listen [::]:80 ;
-        server_name veckanskatt.hopto.org;
+        server_name {{ domain_name }};
         return 404;
 }

@@ -4,6 +4,7 @@
   gather_facts: false
   vars:
     ssh_keys: "{{ lookup('env','SSH_KEYS') }}"
+    domain_name: "{{ lookup('env','WEB_SERVER_HOST') }}"
 
   tasks:
     - digital_ocean_droplet:
