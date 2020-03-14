@@ -7,13 +7,13 @@ cache:
     - _build
     - deps
 before_install:
-  - env
   - echo $DEPLOY_KEY_BASE64 | base64 --decode > travis-deploy-key
   - chmod go-rwx travis-deploy-key
   - pip install --user ansible
 script:
   - mix test --trace || travis_terminate 1
 deploy:
+  skip_cleanup: true
   provider: script
   script: ansible-playbook --private-key travis-deploy-key playbook.yml
   on:
