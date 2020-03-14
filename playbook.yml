@@ -48,11 +48,15 @@
     - name: gather facts now that host is available
       setup:
 
-    - apt: name=nginx state=latest
-    - apt: name=rsync state=latest
-    - apt: name=libtinfo5 state=latest
-    - apt: name=certbot state=latest
-    - apt: name=python-certbot-nginx state=latest
+    - name: Install packages
+      apt:
+        name:
+          - nginx
+          - rsync
+          - libtinfo5
+          - certbot
+          - python-certbot-nginx
+        state: latest
 
     - name: Update all packages
       apt: upgrade=dist update_cache=yes
