@@ -58,3 +58,15 @@
       synchronize:
         src: ./_build/prod/rel/anybot
         dest: /
+
+    - name: Write service file
+      template: src=anybot.service.j2 dest=/etc/systemd/system/anybot.service owner=root group=root mode=644
+
+    - name: Write anybot.env
+      template: src=anybot.env.j2 dest=/etc/default/anybot.env owner=root group=root mode=644
+
+    - name: Enable anybot service
+      service:
+        name: anybot
+        enabled: yes
+        state: started

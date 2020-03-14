@@ -1,0 +1,14 @@
+[Unit]
+Description=Runner for Anybot app
+After=network.target
+
+[Service]
+WorkingDirectory=/anybot
+EnvironmentFile=/etc/default/anybot.env
+ExecStart=/anybot/bin/anybot start
+ExecStop=/anybot/bin/anybot stop
+User=root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
