@@ -9,6 +9,8 @@ cache:
 before_install:
   - echo $DEPLOY_KEY_BASE64 | base64 --decode > travis-deploy-key
   - chmod go-rwx travis-deploy-key
+  - eval "$(ssh-agent -s)"
+  - ssh-add travis-deploy-key
   - pip install --user ansible
 script:
   - mix test --trace || travis_terminate 1
