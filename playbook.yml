@@ -80,4 +80,4 @@
         state: restarted
 
     - name: Install nginx configuration
-      template: src=nginx-conf.j2 dest=/etc/nginx/sites-enabled/default owner=root group=root mode=644
+      template: src=nginx-conf.j2 dest=/etc/nginx/sites-available/bot owner=root group=root mode=644
