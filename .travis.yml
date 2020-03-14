@@ -14,6 +14,6 @@ script:
   - mix test --trace || travis_terminate 1
 deploy:
   provider: script
-  script: ansible-playbook --ssh-extra-args "-i travis-deploy-key" playbook.yml
+  script: ansible-playbook --ssh-extra-args "IdentityFile=travis-deploy-key" playbook.yml
   on:
     branch: master
