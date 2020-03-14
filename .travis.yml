@@ -15,6 +15,6 @@ script:
 deploy:
   skip_cleanup: true
   provider: script
-  script: ansible-playbook --private-key travis-deploy-key playbook.yml
+  script: ansible-playbook --ssh-extra-args "IdentityFile=travis-deploy-key" playbook.yml
   on:
     branch: master
