@@ -2,6 +2,8 @@
 - hosts: localhost
   connection: local
   gather_facts: false
+  vars:
+    ssh_keys: "{{ lookup('env','SSH_KEYS') }}"
 
   # run:
   # $ export DO_API_TOKEN=your-token
@@ -15,7 +17,7 @@
         name: "bot" # name of the droplet
         size_id: s-1vcpu-1gb # slug of the size you would like the droplet created with.
         state: present
-        ssh_keys: ["25655815"] # <----- put your numeric SSH key in here, get it with "doctl compute ssh-key list"
+        ssh_keys: "{{ ssh_keys }}"
       register: created_droplet
 
     - digital_ocean_tag:
