@@ -51,6 +51,7 @@
     - apt: name=nginx state=latest
     - apt: name=rsync state=latest
     - apt: name=libtinfo5 state=latest
+    - apt: name=openssl state=latest
 
     - name: Update all packages
       apt: upgrade=dist update_cache=yes
