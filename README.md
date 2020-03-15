@@ -18,6 +18,10 @@ Decode a string of JSON data. Example: `decode(get("http://example.com/example.j
 
 ## Commands for bots
 
+### `!run <program>`
+
+Run a program.
+
 ### `!save <name> <program>`
 
 Save a program.
