@@ -1,4 +1,4 @@
-# Anybot
+# Slack bot that runs Luerl programs
 
 ## API available to programs
 
@@ -43,29 +43,36 @@ Display help for these commands.
 - Create SSH key in Digital Ocean
 - Create API key (https://cloud.digitalocean.com/account/api/tokens)
 - Fork this project
-- Change playbook.yml to identify your Digital Ocean SSH key (get it with `doctl compute ssh-key list`, for example)
 - Install ansible and dotenv
-- Put API key in .env as `DO_API_TOKEN=<api key>`
-- Put your SSH key ID at Digital Ocean in .env like `SSH_KEYS='["12345678"]'`
+- Set the below environment variables in .env
 - Put random values for `SECRET_KEY_BASE` and `LIVE_VIEW_SIGNING_SALT` in .env (this should be updated to not be required at build time)
 - Run `dotenv ./cross-compile.sh` to build the release
 - Run `dotenv ansible-playbook playbook.yml` to put it in the internet
+- Connect a domain name
+- Log in and run certbot --nginx
+- Manually disable the nginx site "default" and enable the site "bot"
 
 ## Need to set the following variables on Travis, or on other CI server, or in the runtime somehow
 
-- `SECRET_KEY_BASE`
-- `PORT`
+- `SECRET_KEY_BASE` (generate a random secure value)
+- `LIVE_VIEW_SIGNING_SALT` (generate a random secure value)
+- `WEB_SERVER_HOST` (the domain name that the app runs on)
+
+### Get these from Slack:
+
 - `SLACK_APP_ID`
 - `SLACK_CLIENT_ID`
 - `SLACK_CLIENT_SECRET`
 - `SLACK_SIGNING_SECRET`
 - `SLACK_BOT_TOKEN`
-- `LIVE_VIEW_SIGNING_SALT`
+
+### Get these from GitHub:
+
 - `GITHUB_CLIENT_ID`
 - `GITHUB_CLIENT_SECRET`
-- `AUTHORIZED_GITHUB_USERS`
+- `AUTHORIZED_GITHUB_USERS` (list of GitHub usernames that will have access to the web UI)
 
 ### Deployment specific secrets
 
-- `DO_API_TOKEN`
-- `SSH_KEYS` (Example: `'["25655815","26835360"]'`)
+- `DO_API_TOKEN` (Digital Ocean token that has access to provision an instance)
+- `SSH_KEYS` (Example: `'["1000001","1000002"]'`. Get them with `doctl compute ssh-key list`)
